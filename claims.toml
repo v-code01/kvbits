@@ -34,7 +34,7 @@ status = "verified"
 
 [[claim]]
 id = "no-overclaim"
-statement = "kvbits reports perplexity, the exact intrinsic proxy, not task accuracy; a perplexity-1500 model is fully broken so the ranking predicts task results, but GSM8K-style exact-match under each cache type is named as a not-measured next step, not claimed."
+statement = "kvbits reports perplexity, the exact intrinsic quality measure, not task accuracy; a perplexity-1500 model is fully broken so the ranking predicts task results, but GSM8K-style exact-match under each cache type is named as a not-measured next step, not claimed."
 evidence = "README limitations section."
 status = "verified"
 

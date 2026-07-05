@@ -56,7 +56,7 @@ coarse quantization. This makes that asymmetry exact and visible on a real engin
 - One model and size (Qwen2.5-1.5B-Instruct Q4_K_M), one text, contexts 512 and 2048, the
   four ggml cache types. Absolute perplexities are model-specific; the asymmetry and the
   Pareto ranking are the transferable results.
-- **Perplexity is the metric.** It is the exact intrinsic quality proxy and a model at
+- **Perplexity is the metric.** It is the exact intrinsic quality measure and a model at
   perplexity 1500 is fully broken, so the ranking predicts task accuracy; but task-level
   accuracy (for example GSM8K exact-match) under each cache type is not separately measured
   here and is the natural next step.
