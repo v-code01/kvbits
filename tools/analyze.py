@@ -9,6 +9,7 @@ import argparse
 import json
 import os
 import sys
+from typing import Any
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
@@ -17,7 +18,7 @@ from kvbits import pareto_frontier  # noqa: E402
 TYPES = ["f16", "q8_0", "q5_1", "q4_0"]
 
 
-def load(path: str) -> list[dict]:
+def load(path: str) -> list[dict[str, Any]]:
     return [json.loads(line) for line in open(path) if line.strip()]
 
 

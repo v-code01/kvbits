@@ -1,0 +1,45 @@
+# Every claim kvbits makes, each tied to the artifact that proves it.
+# Verify integrity with ./scripts/gate.sh; reproduce the numbers with ./reproduce.sh.
+
+[project]
+name = "kvbits"
+summary = "Exact accuracy-vs-KV-cache-precision frontier on real llama.cpp, and the key-vs-value quantization asymmetry."
+language = "Python 3"
+license = "MIT"
+oracles = "perplexity from llama.cpp's own llama-perplexity binary, exact and deterministic. No model judges anything."
+
+[[claim]]
+id = "exact-byte-accounting"
+statement = "KV bytes per token are exact: model geometry (n_layer, n_head_kv, head_dim) read from the GGUF header times the ggml block bit rate of each cache type, for key and value separately."
+evidence = "src/kvbits.py kv_bytes_per_token + BITS_PER_ELEM; src/ggufmeta.py kv_geometry (verified (28,2,128) on Qwen2.5-1.5B); tests/test_kvbits.py."
+status = "verified"
+
+[[claim]]
+id = "value-cache-lossless-at-4bit"
+statement = "The value cache quantizes to 4-bit for free: across every key precision, dropping the value cache to q4_0 leaves perplexity within noise of f16 (e.g. Kf16/Vq4_0 = 7.14 vs 7.15)."
+evidence = "bench_results/frontier.md K-by-V matrix (rows flat across value columns)."
+status = "verified"
+
+[[claim]]
+id = "key-cache-needs-8-bits"
+statement = "The key cache is sensitive: q5_1 keys (6-bit) blow perplexity to ~150 and q4_0 keys (4.5-bit) to >1500, while q8_0 keys are lossless. The key cliff worsens with context (q5_1 keys ~1000+ at ctx 2048)."
+evidence = "bench_results/frontier.md K-by-V matrices at ctx 512 and 2048 (columns explode down the key rows)."
+status = "verified"
+
+[[claim]]
+id = "asymmetric-is-the-pareto-win"
+statement = "Asymmetric Kq8_0/Vq4_0 is the Pareto-optimal lossless config: a 59% KV-cache reduction at under 1% perplexity change, versus a catastrophic 1573 perplexity for the naive symmetric q4_0."
+evidence = "bench_results/frontier.md Pareto frontier + recommended line; adversarial re-run of Kq8_0/Vq4_0 (7.1478) and independent byte recompute (11648 bytes, 59.4%)."
+status = "verified"
+
+[[claim]]
+id = "no-overclaim"
+statement = "kvbits reports perplexity, the exact intrinsic proxy, not task accuracy; a perplexity-1500 model is fully broken so the ranking predicts task results, but GSM8K-style exact-match under each cache type is named as a not-measured next step, not claimed."
+evidence = "README limitations section."
+status = "verified"
+
+[[claim]]
+id = "clean-build"
+statement = "ruff-clean, mypy --strict clean, 9 pytest tests pass, sources are pure ASCII."
+evidence = "scripts/gate.sh."
+status = "verified"
