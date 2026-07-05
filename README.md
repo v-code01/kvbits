@@ -90,8 +90,7 @@ Needs `llama-perplexity` (llama.cpp) and a Qwen2.5-1.5B-Instruct GGUF:
 ./reproduce.sh /path/to/qwen2.5-1.5b-instruct-q4_k_m.gguf
 ```
 
-Numbers here are on an Apple M4 Pro. The user's model server on port 8080 is never touched;
-kvbits runs the perplexity binary directly and needs no server.
+Numbers here are on an Apple M4 Pro. kvbits runs the perplexity binary directly and needs no server.
 
 ## License
 
